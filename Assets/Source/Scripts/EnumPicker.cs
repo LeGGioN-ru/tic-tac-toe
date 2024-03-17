@@ -6,21 +6,33 @@ using UnityEngine;
 public abstract class EnumPicker<T, T2> where T : Enum where T2 : MonoBehaviour
 {
     private readonly Dictionary<T, List<T2>> _items = new Dictionary<T, List<T2>>();
-    private const int _amountItems = 1;
+    private readonly int _amountItemsInPool;
 
-    public EnumPicker(Dictionary<T, T2> items, Transform itemsTransform)
+    public EnumPicker(Dictionary<T, T2> items, Transform itemsTransform, int amountItemsInPool = 1)
     {
+        _amountItemsInPool = amountItemsInPool;
+
         foreach (var item in items)
         {
             List<T2> itemList = new List<T2>();
 
-            for (int i = 0; i < _amountItems; i++)
+            for (int i = 0; i < _amountItemsInPool; i++)
             {
                 T2 obj = GameObject.Instantiate(item.Value, itemsTransform);
                 obj.gameObject.SetActive(false);
 
                 itemList.Add(obj);
             }
+
+            _items.Add(item.Key, itemList);
+        }
+    }
+
+    public EnumPicker(Dictionary<T, T2> items)
+    {
+        foreach (var item in items)
+        {
+            List<T2> itemList = new List<T2>() { item.Value };
 
             _items.Add(item.Key, itemList);
         }

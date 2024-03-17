@@ -11,8 +11,8 @@ public class GameRoot : MonoInstaller
 
     public override void InstallBindings()
     {
-        LoadScreenPicker loadScreenPicker = new LoadScreenPicker(_loadScreens);
+        LoadScreenPicker loadScreenPicker = new LoadScreenPicker(_loadScreens, _gameCanvas.transform);
 
-        Container.BindInterfacesAndSelfTo<GameInitializator>().AsSingle().WithArguments(loadScreenPicker, _gameCanvas, _coroutineManager);
+        Container.BindInterfacesAndSelfTo<GameInitializator>().AsSingle().WithArguments(loadScreenPicker, _coroutineManager);
     }
 }

@@ -5,7 +5,6 @@ using Zenject;
 public class GameInitializator : IInitializable
 {
     private readonly LoadScreenPicker _loadScreenPicker;
-    private readonly Canvas _gameCanvas;
     private readonly CoroutineManager _coroutineManager;
 
     private LoadScreen _loadScreen;
@@ -13,16 +12,16 @@ public class GameInitializator : IInitializable
     private const int _amountPartLoad = 8;
     private const float _afterLoadWaitTime = 0.25f;
 
-    public GameInitializator(LoadScreenPicker loadScreenPicker, Canvas gameCanvas, CoroutineManager coroutineManager)
+    public GameInitializator(LoadScreenPicker loadScreenPicker, CoroutineManager coroutineManager)
     {
         _loadScreenPicker = loadScreenPicker;
-        _gameCanvas = gameCanvas;
         _coroutineManager = coroutineManager;
     }
 
     public void Initialize()
     {
-        _loadScreen = _loadScreenPicker.ShowScreen(LoadSceenType.DefaultLoadScreen, _gameCanvas);
+        _loadScreen = _loadScreenPicker.GetItem(LoadSceenType.DefaultLoadScreen);
+        _loadScreen.Show();
         _coroutineManager.StartCoroutine(LoadGame());
     }
 
