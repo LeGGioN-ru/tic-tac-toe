@@ -8,6 +8,8 @@ public class GameRoot : MonoInstaller
     [SerializeField] private SerializedDictionary<LoadSceenType, LoadScreen> _loadScreens;
     [SerializedDictionary("Pop Up Type", "Pop Up")]
     [SerializeField] private SerializedDictionary<PopUpType, PopUp> _popUps;
+    [SerializedDictionary("Menu Type", "Menu")]
+    [SerializeField] private SerializedDictionary<MenuType, Menu> _menu;
     [SerializeField] private CoroutineManager _coroutineManager;
     [SerializeField] private Canvas _gameCanvas;
 
@@ -17,5 +19,8 @@ public class GameRoot : MonoInstaller
         Container.BindInterfacesAndSelfTo<GameInitializator>().AsSingle().WithArguments(loadScreenPicker, _coroutineManager);
 
         PopUpPicker popUpPicker = new PopUpPicker(_popUps, _gameCanvas.transform);
+        MenuPicker menuPicker = new MenuPicker(_menu);
+
+        Container.BindInstance(menuPicker);
     }
 }

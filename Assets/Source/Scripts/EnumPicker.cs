@@ -7,10 +7,12 @@ public abstract class EnumPicker<T, T2> where T : Enum where T2 : MonoBehaviour
 {
     private readonly Dictionary<T, List<T2>> _items = new Dictionary<T, List<T2>>();
     private readonly int _amountItemsInPool;
+    private readonly bool _isPool;
 
     public EnumPicker(Dictionary<T, T2> items, Transform itemsTransform, int amountItemsInPool = 1)
     {
         _amountItemsInPool = amountItemsInPool;
+        _isPool = true;
 
         foreach (var item in items)
         {
@@ -30,6 +32,8 @@ public abstract class EnumPicker<T, T2> where T : Enum where T2 : MonoBehaviour
 
     public EnumPicker(Dictionary<T, T2> items)
     {
+        _isPool = false;
+
         foreach (var item in items)
         {
             List<T2> itemList = new List<T2>() { item.Value };
@@ -42,7 +46,12 @@ public abstract class EnumPicker<T, T2> where T : Enum where T2 : MonoBehaviour
     {
         if (_items.ContainsKey(@enum))
         {
-            T2 obj = _items[@enum].FirstOrDefault(x => x.gameObject.activeSelf == false);
+            T2 obj = null;
+
+            if (_isPool)
+                obj = _items[@enum].FirstOrDefault(x => x.gameObject.activeSelf == false);
+            else
+                obj = _items[@enum].FirstOrDefault();
 
             if (obj != null)
                 return obj;
