@@ -12,6 +12,8 @@ public class GameInitializator : IInitializable
     private const int _amountPartLoad = 8;
     private const float _afterLoadWaitTime = 0.25f;
 
+    public bool IsGameInitializated { get; private set; }
+
     public GameInitializator(LoadScreenPicker loadScreenPicker, CoroutineManager coroutineManager)
     {
         _loadScreenPicker = loadScreenPicker;
@@ -36,5 +38,7 @@ public class GameInitializator : IInitializable
         yield return new WaitForSeconds(_afterLoadWaitTime);
 
         _loadScreen.Hide();
+
+        IsGameInitializated = true;
     }
 }

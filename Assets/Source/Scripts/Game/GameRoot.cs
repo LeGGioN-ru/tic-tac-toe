@@ -15,12 +15,17 @@ public class GameRoot : MonoInstaller
 
     public override void InstallBindings()
     {
-        LoadScreenPicker loadScreenPicker = new LoadScreenPicker(_loadScreens, _gameCanvas.transform);
-        Container.BindInterfacesAndSelfTo<GameInitializator>().AsSingle().WithArguments(loadScreenPicker, _coroutineManager);
+        Container.BindInterfacesAndSelfTo<DefaultHide>().AsSingle();
+        Container.BindInterfacesAndSelfTo<DefaultShow>().AsSingle();
 
-        PopUpPicker popUpPicker = new PopUpPicker(_popUps, _gameCanvas.transform);
-        MenuPicker menuPicker = new MenuPicker(_menu);
-
-        Container.BindInstance(menuPicker);
+        Container.BindInterfacesAndSelfTo<LoadScreenPicker>().AsSingle().WithArguments(_loadScreens, _gameCanvas.transform);
+        Container.BindInterfacesAndSelfTo<GameInitializator>().AsSingle().WithArguments(_coroutineManager);
+        SignalBusInstaller.Install(Container);
+        Container.DeclareSignal<PopUpShowed>();
+        Container.DeclareSignal<PopUpHided>();
+        Container.BindInterfacesAndSelfTo<PopUpPicker>().AsSingle().WithArguments(_popUps, _gameCanvas.transform, 3).NonLazy();
+        Container.BindInitializableExecutionOrder<GameInitializator>(1);
+        Container.BindInterfacesAndSelfTo<MenuPicker>().AsSingle().WithArguments(_menu).NonLazy();
+        Container.BindInterfacesAndSelfTo<MenuChanger>().AsSingle();
     }
 }

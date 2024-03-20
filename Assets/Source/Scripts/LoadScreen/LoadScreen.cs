@@ -1,17 +1,4 @@
-using UnityEngine;
-
-public abstract class LoadScreen : MonoBehaviour
+public abstract class LoadScreen : Screen
 {
-    public virtual void Show()
-    {
-        transform.SetAsLastSibling();
-        gameObject.SetActive(true);
-    }
-
-    public virtual void Hide()
-    {
-        gameObject.SetActive(false);
-    }
-
     public abstract void SetProgress(float currentProgress);
 }

@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using UnityEngine.UI;
 
-public class Menu : MonoBehaviour
+public class Menu : Screen
 {
     private List<Selectable> _selectables;
 
@@ -12,15 +11,15 @@ public class Menu : MonoBehaviour
         _selectables = GetComponentsInChildren<Selectable>().ToList();
     }
 
-    public void EnableMenu()
+    public override void Show()
     {
-        gameObject.SetActive(true);
+        base.Show();
         EnableUI();
     }
 
-    public void DisableMenu()
+    public override void Hide()
     {
-        gameObject.SetActive(false);
+        base.Hide();
         DisableUI();
     }
 

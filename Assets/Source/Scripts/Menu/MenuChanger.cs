@@ -1,34 +1,40 @@
 using System;
-using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 
-public class MenuChanger : IDisposable, IInitializable
+public class MenuChanger : IInitializable, IDisposable
 {
-    private readonly Button _button;
     private readonly MenuPicker _menuPicker;
-    private readonly MenuType _menuType;
+    private readonly SignalBus _signalBus;
+    private Menu _currentMenu;
 
-    public MenuChanger(MenuPicker menuPicker, MenuType menuType, Button button)
+    public MenuType CurrentMenuType { get; private set; }
+
+    public MenuChanger(MenuPicker menuPicker, SignalBus signalBus)
     {
         _menuPicker = menuPicker;
-        _button = button;
-        _menuType = menuType;
+        _signalBus = signalBus;
     }
 
-    public void Dispose()
+    public void ChangeMenu(MenuType menuType)
     {
-        _button.onClick.RemoveListener(ChangeMenu);
+        Menu menu = _menuPicker.GetItem(menuType);
+        _currentMenu.Hide();
+        menu.Show();
+        CurrentMenuType = menuType;
+        _currentMenu = menu;
     }
 
     public void Initialize()
     {
-        Debug.Log("aaa");
-        _button.onClick.AddListener(ChangeMenu);
+        _currentMenu = _menuPicker.GetItem(MenuType.MainMenu);
+
+        _signalBus.Subscribe<PopUpShowed>(() => _currentMenu.DisableUI());
+        _signalBus.Subscribe<PopUpHided>(() => _currentMenu.EnableUI());
     }
 
-    public void ChangeMenu()
+    public void Dispose()
     {
-        _menuPicker.ChangeMenu(_menuType);
+        _signalBus.TryUnsubscribe<PopUpShowed>(() => _currentMenu.DisableUI());
+        _signalBus.TryUnsubscribe<PopUpHided>(() => _currentMenu.EnableUI());
     }
 }

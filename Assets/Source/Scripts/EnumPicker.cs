@@ -2,31 +2,44 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
-public abstract class EnumPicker<T, T2> where T : Enum where T2 : MonoBehaviour
+public abstract class EnumPicker<T, T2> : IInitializable where T : Enum where T2 : MonoBehaviour
 {
     private readonly Dictionary<T, List<T2>> _items = new Dictionary<T, List<T2>>();
+    private readonly Dictionary<T, T2> _notInitItems = new Dictionary<T, T2>();
+    private readonly Transform _transform;
     private readonly int _amountItemsInPool;
+    private readonly DiContainer _container;
     private readonly bool _isPool;
 
-    public EnumPicker(Dictionary<T, T2> items, Transform itemsTransform, int amountItemsInPool = 1)
+    public EnumPicker(Dictionary<T, T2> items, Transform itemsTransform, DiContainer diContainer, int amountItemsInPool = 1)
     {
         _amountItemsInPool = amountItemsInPool;
+        _container = diContainer;
         _isPool = true;
+        _notInitItems = items;
+        _transform = itemsTransform;
+    }
 
-        foreach (var item in items)
+    public virtual void Initialize()
+    {
+        if (_isPool)
         {
-            List<T2> itemList = new List<T2>();
-
-            for (int i = 0; i < _amountItemsInPool; i++)
+            foreach (var item in _notInitItems)
             {
-                T2 obj = GameObject.Instantiate(item.Value, itemsTransform);
-                obj.gameObject.SetActive(false);
+                List<T2> itemList = new List<T2>();
 
-                itemList.Add(obj);
+                for (int i = 0; i < _amountItemsInPool; i++)
+                {
+                    T2 obj = CreateObject(item.Value, _transform);
+                    obj.gameObject.SetActive(false);
+
+                    itemList.Add(obj);
+                }
+
+                _items.Add(item.Key, itemList);
             }
-
-            _items.Add(item.Key, itemList);
         }
     }
 
@@ -59,6 +72,8 @@ public abstract class EnumPicker<T, T2> where T : Enum where T2 : MonoBehaviour
             throw new Exception($"Can't find free element in pool");
         }
 
+
+        Debug.Log(_items.Count);
         throw new ArgumentException($"Items must contains {@enum} key.");
     }
 
@@ -71,5 +86,10 @@ public abstract class EnumPicker<T, T2> where T : Enum where T2 : MonoBehaviour
             return needType;
 
         throw new Exception($"Object with base type {currentTypeObject.GetType().Name} and with key {typeof(T).Name} can't cast to {typeof(T3).Name}");
+    }
+
+    protected virtual T2 CreateObject(T2 prefab, Transform transform)
+    {
+        return _container.InstantiatePrefabForComponent<T2>(prefab, transform);
     }
 }

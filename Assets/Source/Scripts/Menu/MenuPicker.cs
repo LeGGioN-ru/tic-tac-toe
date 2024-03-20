@@ -1,19 +1,13 @@
+using System;
 using System.Collections.Generic;
+using Zenject;
 
 public class MenuPicker : EnumPicker<MenuType, Menu>
 {
-    private Menu _currentMenu;
+    private readonly SignalBus _signalBus;
 
-    public MenuPicker(Dictionary<MenuType, Menu> items) : base(items)
+    public MenuPicker(Dictionary<MenuType, Menu> items, SignalBus signalBus) : base(items)
     {
-        _currentMenu = GetItem(MenuType.MainMenu);
-    }
-
-    public void ChangeMenu(MenuType menuType)
-    {
-        Menu menu = GetItem(menuType);
-        _currentMenu.DisableMenu();
-        menu.EnableMenu();
-        _currentMenu = menu;
+        _signalBus = signalBus;
     }
 }

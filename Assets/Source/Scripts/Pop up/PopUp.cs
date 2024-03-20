@@ -1,18 +1,27 @@
 using System;
-using UnityEngine;
+using Zenject;
 
-public abstract class PopUp : MonoBehaviour
+public abstract class PopUp : Screen
 {
     public Action<PopUpCallbackType> Callback;
 
-    public virtual void Show()
+    private SignalBus _signalBus;
+
+    [Inject]
+    public void Construct(SignalBus signalBus)
     {
-        transform.SetAsLastSibling();
-        gameObject.SetActive(true);
+        _signalBus = signalBus;
     }
 
-    public virtual void Hide()
+    public override void Show()
     {
-        gameObject.SetActive(false);
+        base.Show();
+        _signalBus.Fire(new PopUpShowed());
+    }
+
+    public override void Hide()
+    {
+        base.Hide();
+        _signalBus.Fire(new PopUpHided());
     }
 }
