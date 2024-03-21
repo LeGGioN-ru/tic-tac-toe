@@ -1,0 +1,38 @@
+{
+  "shopItems": [
+    {
+      "key": "gold",
+      "price": "1.99",
+      "items": [
+        {
+          "key": "gold",
+          "amount": 100
+        }
+      ]
+    },
+    {
+      "key": "silver",
+      "price": "0.99",
+      "items": [
+        {
+          "key": "silver",
+          "amount": 5000
+        }
+      ]
+    },
+    {
+      "key": "starterPack",
+      "price": "1.99",
+      "items": [
+        {
+          "key": "sword",
+          "damage": "14"
+        },
+        {
+          "key": "ressurect",
+          "amount": 3
+        }
+      ]
+    }
+  ]
+}

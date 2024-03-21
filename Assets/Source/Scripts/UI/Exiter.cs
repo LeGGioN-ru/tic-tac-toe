@@ -1,25 +1,30 @@
 using UnityEngine;
 using Zenject;
 
-public class Exiter : IActivable,ITickable
+public class Exiter : IActivable, ITickable, IInitializable
 {
-    private PopUpPicker _popUpPicker;
-    private MenuChanger _menuChanger;
+    private readonly PopUpPicker _popUpPicker;
+    private readonly MenuChanger _menuChanger;
+    private readonly GameInitializator _gameInitializator;
+    private readonly bool _needApprove;
+    private readonly IExitStrategy _exitStrategy;
+
     private PopUp _popUp;
-    private bool _needApprove;
     private MenuType _inMenu;
-    private IExitStrategy _exitStrategy;
-    private GameInitializator _gameInitializator;
 
     public Exiter(PopUpPicker popUpPicker, MenuChanger menuChanger, GameInitializator gameInitializator,
-        bool needApprove, MenuType inMenu, IExitStrategy exitStrategy)
+        bool needApprove, IExitStrategy exitStrategy)
     {
         _exitStrategy = exitStrategy;
-        _inMenu = inMenu;
         _needApprove = needApprove;
         _gameInitializator = gameInitializator;
         _menuChanger = menuChanger;
         _popUpPicker = popUpPicker;
+    }
+
+    public void Initialize()
+    {
+        _inMenu = _menuChanger.CurrentMenuType;
     }
 
     public void Tick()

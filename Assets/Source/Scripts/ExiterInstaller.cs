@@ -6,9 +6,8 @@ using Zenject;
 public class ExiterInstaller : MonoInstaller
 {
     [SerializeField] private TypeExit _typeExit;
-    [SerializeField] private MenuType _inMenu;
     [SerializeField] private bool _needApprove;
-    [ShowIf(nameof(_needApprove))]
+    [ShowIfIs(nameof(_typeExit), TypeExit.MenuExit)]
     [SerializeField] private MenuType _toMenu;
 
     public override void InstallBindings()
@@ -25,6 +24,6 @@ public class ExiterInstaller : MonoInstaller
                 throw new InvalidEnumArgumentException();
         }
 
-        Container.BindInterfacesAndSelfTo<Exiter>().AsSingle().WithArguments(_needApprove, _inMenu);
+        Container.BindInterfacesAndSelfTo<Exiter>().AsSingle().WithArguments(_needApprove);
     }
 }

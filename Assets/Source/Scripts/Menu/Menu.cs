@@ -6,6 +6,13 @@ public class Menu : Screen
 {
     private List<Selectable> _selectables;
 
+    public MenuType MenuType { get; private set; }
+
+    public void Init(MenuType menuType)
+    {
+        MenuType = menuType; //TODO: Возможно это плохой способ!
+    }
+
     private void Start()
     {
         _selectables = GetComponentsInChildren<Selectable>().ToList();
