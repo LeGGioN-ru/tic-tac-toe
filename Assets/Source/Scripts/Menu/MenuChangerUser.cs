@@ -1,10 +1,10 @@
 using UnityEngine;
 using Zenject;
 
-public class MenuChangerUser:MonoBehaviour
+public class MenuChangerUser : MonoBehaviour
 {
     [SerializeField] private MenuType _targetMenu;
-    
+
     private MenuChanger _menuChanger;
 
     [Inject]

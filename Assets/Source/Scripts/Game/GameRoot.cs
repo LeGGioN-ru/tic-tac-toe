@@ -1,5 +1,6 @@
 using AYellowpaper.SerializedCollections;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 public class GameRoot : MonoInstaller
