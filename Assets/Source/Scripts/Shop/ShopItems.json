@@ -1,38 +1,26 @@
-{
-  "shopItems": [
-    {
-      "key": "gold",
-      "price": "1.99",
-      "items": [
-        {
-          "key": "gold",
-          "amount": 100
-        }
-      ]
-    },
-    {
-      "key": "silver",
-      "price": "0.99",
-      "items": [
-        {
-          "key": "silver",
-          "amount": 5000
-        }
-      ]
-    },
-    {
-      "key": "starterPack",
-      "price": "1.99",
-      "items": [
-        {
-          "key": "sword",
-          "damage": "14"
-        },
-        {
-          "key": "ressurect",
-          "amount": 3
-        }
-      ]
-    }
-  ]
-}
+[
+  {
+    "Key": "goldPack",
+    "Price": 1.99,
+    "Items": [
+      {
+        "Key": "gold",
+        "Amount": 100
+      }
+    ]
+  },
+  {
+    "Key": "starterPack",
+    "Price": 5.99,
+    "Items": [
+      {
+        "Key": "sword",
+        "Damage": 14
+      },
+      {
+        "Key": "silver",
+        "Amount": 500
+      }
+    ]
+  }
+]
